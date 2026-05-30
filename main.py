@@ -29,3 +29,49 @@ df_new1 = pd.DataFrame(df_new1.reset_index())
 df_new1.rename(columns={0: 'Directors'},inplace=True)
 df_new1.drop(['level_1'],axis=1,inplace=True)
 df_new1
+
+# unnesting the cast column, i.e., - creating separate lines for each cast member in a moive 
+constraint2 = df['cast'].apply(lambda x: str(x).split(', ')).tolist()
+df_new2 = pd.DataFrame(constraint2,index=df['title'])
+df_new2 = df_new2.stack()
+df_new2 = pd.DataFrame(df_new2.reset_index())
+df_new2.rename(columns={0: 'Actors'},inplace=True)
+df_new2.drop(['level_1'],axis=1,inplace=True)
+df_new2.head()
+
+# unnesting the listed_in column, i.e. - creating separate lines for each genre in a movie
+constraint3 = df['listed_in'].apply(lambda x: str(x).split(', ')).tolist()
+df_new3 = pd.DataFrame(constraint3,index=df['title'])
+df_new3 = df_new3.stack()
+df_new3 = pd.DataFrame(df_new3.reset_index())
+df_new3.rename(columns={0:'Genre'},inplace=True)
+df_new3.drop(['level_1'],axis=1,inplace=True)
+df_new3
+
+# unnesting the country column, i.e- creating separate lines for each country in a movie
+constraint4 = df['country'].apply(lambda x: str(x).split(', ')).tolist()
+df_new4 = pd.DataFrame(constraint4, index=df['title'])
+df_new4 = df_new4.stack()
+df_new4 = pd.DataFrame(df_new4.reset_index())
+df_new4.rename(columns={0: 'country'},inplace=True)
+df_new4.drop(['level_1'],axis=1,inplace=True)
+df_new4.head()
+
+# mergint the unnested director data with unnested actors data.
+df_new5 = df_new2.merge(df_new1, on=['title'],how='inner')
+
+# merging the above merged data with unnested genre data
+df_new6 = df_new5.merge(df_new3,on=['title'],how='inner')
+
+# merging the above data with unnested country data.
+df_new = df_new6.merge(df_new4,on=['title'],how = 'inner')
+
+# replacing nan values of director and actor by unknown actor and director
+df_new['Actors'].replace(['nan'],['Unknown Actor'],inplace=True)
+df_new['Directors'].replace(['nan'],['Unknown Director'],inplace=True)
+df_new['country'].replace(['nan'],[np.nan],inplace=True)
+df_new.head()
+
+# merging our unnested data with the original data
+df_final = df_new.merge(df[['show_id', 'type', 'title', 'date_added', 'release_year', 'rating', 'duration']],on=['title'],how='left')
+df_final.head()
