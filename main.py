@@ -75,3 +75,20 @@ df_new.head()
 # merging our unnested data with the original data
 df_final = df_new.merge(df[['show_id', 'type', 'title', 'date_added', 'release_year', 'rating', 'duration']],on=['title'],how='left')
 df_final.head()
+
+# checking nulls
+df_final.isnull().sum()
+
+# In duration column it was observed that the nulls had values which were written in corresponding rating columns, i.e., you can't expect ratings to be in minutes. So the duration columsns are repladed by corresponding values in raings column.
+
+df_final.loc[df_final['duration'].isnull(),'duration']=df_final.loc[df_final['duration'].isnull(),'duration'].fillna(df_final['rating'])
+df_final.loc[df_final['rating'].str.contains('mins',na=False),'rating']='NR'
+df_final.isnull().sum()
+
+# Rating can't be in min, so it has been made NR(i.e- Non rated)
+df_final.loc[df_final['rating'].str.contains('min',na=False),'rating']='NR'
+df_final['rating'].fillna('NR',inplace=True)
+pd.set_option('display.max_rows',None)
+
+# nulls in date added column
+df_final[df_final['date_added'].isnull()].head()
