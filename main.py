@@ -92,3 +92,19 @@ pd.set_option('display.max_rows',None)
 
 # nulls in date added column
 df_final[df_final['date_added'].isnull()].head()
+
+# date added column is imputed on the basis of relase year, i.e - suppose there's a null for date_added. When release year was 2013. So below piece of code just checks the mode of date added for relase year = 2013 and imputes in place of nulls the corresponding mode.
+
+for i in df_final[df_final['date_added'].isnull()]['release_year'].unique():
+  imp = df_final[df_final['release_year'] == i]['date_added'].mode().values[0]
+  df_final.loc[df_final['release_year'] == i, 'date_added'] = df_final.loc[df_final['release_year']==i,'date_added'].fillna(imp)
+
+
+# country column is imputed on the basis of directors, i.e - suppose therer's a null for country
+# where we have a director whose other moives have country given. So below piece of code just checks the mode of country for the director and imputes in place of nulls the corresponding mode.
+
+for i in df_final[df_final['country'].isnull()]['Directors'].unique():
+  if i in df_final[~df_final['country'].isnull()]['Directors'].unique():
+    imp = df_final[df_final['Directors']==i]['country'].mode().values[0]
+    df_final.loc[df_final['Directors']==i,'country']= df_final.loc[df_final['Directors']==i,'country'].fillna(imp)
+
