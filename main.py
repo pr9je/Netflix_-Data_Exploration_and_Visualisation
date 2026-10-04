@@ -1,4 +1,4 @@
-# ── Import Libraries ─────────────────────────────────────────────────────────
+# Import Libraries
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,7 +15,7 @@ plt.rcParams.update({'figure.dpi': 100, 'figure.facecolor': 'white'})
 df = pd.read_csv('/content/netflix.csv')
 df.head()
 
-# ── Basic Metrics ─────────────────────────────────────────────────────────────
+# Basic Metrics 
 total     = len(df)
 movies    = (df['type'] == 'Movie').sum()
 tv        = (df['type'] == 'TV Show').sum()
