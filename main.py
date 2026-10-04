@@ -36,3 +36,8 @@ print(f'  Unique Actors        : {actors:,}')
 print(f'  Unique Genres        : {genres}')
 print(f'  Release Year Range   : {int(df.release_year.min())} – {int(df.release_year.max())}')
 print('=' * 52)
+
+# Shape, Datatypes, Categorical Conversion, Missing Values & Statistical Summary
+# Shape of data
+print(f'Shape: {df.shape} -> {df.shape[0]:,} rows, {df.shape[1]} columns')
+df.head()
