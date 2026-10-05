@@ -41,3 +41,9 @@ print('=' * 52)
 # Shape of data
 print(f'Shape: {df.shape} -> {df.shape[0]:,} rows, {df.shape[1]} columns')
 df.head()
+
+# Data Types (before conversion)
+print('Data types (original):')
+print(df.dtypes)
+print()
+df.info()
