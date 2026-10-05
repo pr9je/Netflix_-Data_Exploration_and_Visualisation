@@ -47,3 +47,15 @@ print('Data types (original):')
 print(df.dtypes)
 print()
 df.info()
+
+# Convert categorical columns to 'category' dtype 
+# 'type' and 'rating' have low cardinality — converting reduces memory usage
+# and makes category-aware operations more efficient.
+df['type']   = df['type'].astype('category')
+df['rating'] = df['rating'].astype('category')
+
+print('Columns converted to category dtype:')
+print(df[['type','rating']].dtypes)
+print()
+print(f"  'type'   categories : {df['type'].cat.categories.tolist()}")
+print(f"  'rating' categories : {sorted(df['rating'].dropna().cat.categories.tolist())}")
