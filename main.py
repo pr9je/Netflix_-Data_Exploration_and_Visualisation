@@ -59,3 +59,12 @@ print(df[['type','rating']].dtypes)
 print()
 print(f"  'type'   categories : {df['type'].cat.categories.tolist()}")
 print(f"  'rating' categories : {sorted(df['rating'].dropna().cat.categories.tolist())}")
+
+# Missing Value Detection 
+missing = pd.DataFrame({
+    'Missing Count' : df.isnull().sum(),
+    'Missing %'     : (df.isnull().sum() / len(df) * 100).round(2)
+}).query('`Missing Count` > 0').sort_values('Missing %', ascending=False)
+
+print('Missing Values Summary:')
+print(missing.to_string())
