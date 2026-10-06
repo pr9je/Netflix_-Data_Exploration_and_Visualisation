@@ -68,3 +68,14 @@ missing = pd.DataFrame({
 
 print('Missing Values Summary:')
 print(missing.to_string())
+
+# Missing value bar chart
+fig, ax = plt.subplots(figsize=(9, 4))
+missing['Missing %'].plot(kind='barh', ax=ax, color='salmon', edgecolor='black')
+ax.set_xlabel('Missing %', fontsize=12)
+ax.set_title('Missing Value Percentage by column', fontsize=14, fontweight='bold')
+for bar in ax.patches:
+  ax.text(bar.get_width() + 0.2, bar.get_y() + bar.get_height()/2,
+          f'{bar.get_width():.1f}%', va='center', fontsize=9)
+plt.tight_layout()
+plt.show()
