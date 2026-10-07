@@ -93,3 +93,6 @@ for i in df.columns:
 
 # Checking null values in every column of our data
 df.isnull().sum()
+
+# Checking the occurences of each of the ratings.
+df['rating'].value_counts()
