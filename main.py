@@ -104,3 +104,9 @@ con1[:3]
 
 df_new1 = pd.DataFrame(con1,index=df['title'])
 df_new1.head()
+
+constraint1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+df_new1 = pd.DataFrame(constraint1, index=df['title'])
+df_new1 = df_new1.stack()
+df_new1 = pd.DataFrame(df_new1.reset_index())
+df_new1.sample(5)
