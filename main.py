@@ -79,3 +79,17 @@ for bar in ax.patches:
           f'{bar.get_width():.1f}%', va='center', fontsize=9)
 plt.tight_layout()
 plt.show()
+
+# Non-graphical Analysis: Value count & Unique Attributes
+# length of data
+len(df)
+
+# Checking datatypes
+df.dtypes
+
+# number of unique values in our data
+for i in df.columns:
+  print(i,':', df[i].nunique)
+
+# Checking null values in every column of our data
+df.isnull().sum()
