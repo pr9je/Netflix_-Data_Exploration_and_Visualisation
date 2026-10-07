@@ -96,3 +96,11 @@ df.isnull().sum()
 
 # Checking the occurences of each of the ratings.
 df['rating'].value_counts()
+
+## Pre-Processing: Unnesting Multi-Value Columns
+
+con1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+con1[:3]
+
+df_new1 = pd.DataFrame(con1,index=df['title'])
+df_new1.head()
