@@ -110,3 +110,12 @@ df_new1 = pd.DataFrame(constraint1, index=df['title'])
 df_new1 = df_new1.stack()
 df_new1 = pd.DataFrame(df_new1.reset_index())
 df_new1.sample(5)
+
+# unnesting directors column, i.e. creating separate lines for each director in a moive. 
+constraint1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+df_new1 = pd.DataFrame(constraint1, index=df['title'])
+df_new1 = df_new1.stack()
+df_new1 = pd.DataFrame(df_new1.reset_index())
+df_new1.rename(columns={0:'Directors'}, inplace=True)
+df_new1.drop(['level_1'], axis=1,inplace=True)
+df_new1.head()
