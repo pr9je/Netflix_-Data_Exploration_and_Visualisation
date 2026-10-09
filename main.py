@@ -119,3 +119,12 @@ df_new1 = pd.DataFrame(df_new1.reset_index())
 df_new1.rename(columns={0:'Directors'}, inplace=True)
 df_new1.drop(['level_1'], axis=1,inplace=True)
 df_new1.head()
+
+# unnesting the cast column, i.e. - creating separate lines for each cast member in movie
+constraint2 = df['cast'].apply(lambda x: str(x).split(', ')).tolist()
+df_new2 = pd.DataFrame(constraint2, index=df['title'])
+df_new2=df_new2.stack()
+df_new2=pd.DataFrame(df_new2.reset_index())
+df_new2.rename(columns={0:'Cast'}, inplace=True)
+df_new2.drop(['level_1'], axis=1, inplace=True)
+df_new2.head()
