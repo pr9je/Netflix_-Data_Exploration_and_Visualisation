@@ -137,3 +137,12 @@ df_new3= pd.DataFrame(df_new3.reset_index())
 df_new3.rename(columns={0:'Genre'},inplace=True)
 df_new3.drop(['level_1'], axis=1, inplace=True)
 df_new3.head()
+
+# unnesting the country column, i.e. creating separate lines for each country in a movie
+constraint4 = df['country'].apply(lambda x: str(x).split(', ')).tolist()
+df_new4 = pd.DataFrame(constraint4,index=df['title'])
+df_new4 = df_new4.stack()
+df_new4 = pd.DataFrame(df_new4.reset_index())
+df_new4.rename(columns={0: 'country'},inplace=True)
+df_new4.drop(['level_1'], axis=1, inplace=True)
+df_new4.head()
