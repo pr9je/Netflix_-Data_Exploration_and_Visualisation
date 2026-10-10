@@ -146,3 +146,18 @@ df_new4 = pd.DataFrame(df_new4.reset_index())
 df_new4.rename(columns={0: 'country'},inplace=True)
 df_new4.drop(['level_1'], axis=1, inplace=True)
 df_new4.head()
+
+#merging the unnested director data with unnested actors data
+df_new5 = df_new2.merge(df_new1, on=['title'],how='inner')
+
+#merging the above merged data with unnested genre data
+df_new6 = df_new5.merge(df_new3, on=['title'],how='inner')
+
+# merging the above merged data with unnested country data
+df_new = df_new6.merge(df_new4, on=['title'], how='inner')
+
+# replacing nan values od directore and actor by unknown actor and director
+df_new['Actors'].replace(['nan'],['Unknown Actor'], inplace=True)
+df_new['Directors'].replace(['nan'],['Unknown Director'],inplace=True)
+df_new['country'].replace(['nan'], [np.nan],inplace=True)
+df_new.head(20)
