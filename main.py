@@ -161,3 +161,8 @@ df_new['Actors'].replace(['nan'],['Unknown Actor'], inplace=True)
 df_new['Directors'].replace(['nan'],['Unknown Director'],inplace=True)
 df_new['country'].replace(['nan'], [np.nan],inplace=True)
 df_new.head(20)
+
+#merging our unnested data with the original data
+df_final=df_new.merge(df[['show_id', 'type', 'title', 'date_added',
+       'release_year', 'rating', 'duration']],on=['title'],how='left')
+df_final.head()
