@@ -169,3 +169,7 @@ df_final.head()
 
 #now checking nulls
 df_final.isnull().sum()
+
+df_final.loc[df_final['duration'].isnull(),'duration']=df_final.loc[df_final['duration'].isnull(),'duration'].fillna(df_final['rating'])
+df_final.loc[df_final['rating'].str.contains('min', na=False),'rating']='NR'
+df_final.isnull().sum()
