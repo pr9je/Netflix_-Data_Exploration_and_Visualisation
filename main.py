@@ -166,3 +166,6 @@ df_new.head(20)
 df_final=df_new.merge(df[['show_id', 'type', 'title', 'date_added',
        'release_year', 'rating', 'duration']],on=['title'],how='left')
 df_final.head()
+
+#now checking nulls
+df_final.isnull().sum()
