@@ -173,3 +173,8 @@ df_final.isnull().sum()
 df_final.loc[df_final['duration'].isnull(),'duration']=df_final.loc[df_final['duration'].isnull(),'duration'].fillna(df_final['rating'])
 df_final.loc[df_final['rating'].str.contains('min', na=False),'rating']='NR'
 df_final.isnull().sum()
+
+# Rating can't ne in minutes, so it has been mad NR(i.e. - Non Rated)
+df_final.loc[df_final['rating'].str.contains('min', na=False), 'rating'] = 'NR'
+df_final['rating'].fillna('NR', inplace=True)
+pd.set_option('display.max_rows',None)
