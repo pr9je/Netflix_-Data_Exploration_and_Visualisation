@@ -178,3 +178,8 @@ df_final.isnull().sum()
 df_final.loc[df_final['rating'].str.contains('min', na=False), 'rating'] = 'NR'
 df_final['rating'].fillna('NR', inplace=True)
 pd.set_option('display.max_rows',None)
+
+df_final.isnull().sum()
+
+# just an attempt to observe nulls in date_added column
+df_final[df_final['date_added'].isnull()].head()
