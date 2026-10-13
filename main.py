@@ -197,3 +197,11 @@ for i in df_final[df_final['country'].isnull()]['Directors'].unique():
   if i in df_final[~df_final['country'].isnull()]['Directors'].unique():
     imp=df_final[df_final['Directors']==i]['country'].mode().values[0]
     df_final.loc[df_final['Directors']==i,'country']=df_final.loc[df_final['Directors']==i,'country'].fillna(imp)
+
+for i in df_final[df_final['country'].isnull()]['Actors'].unique():
+  if i in df_final[~df_final['country'].isnull()]['Actors'].unique():
+    imp=df_final[df_final['Actors']==i]['country'].mode().values[0]
+    df_final.loc[df_final['Actors']==i,'country']=df_final.loc[df_final['Actors']==i,'country'].fillna(imp)
+#If there are still nulls, I just replace it by Unknown Country
+df_final['country'].fillna('Unknown Country',inplace=True)
+df_final.isnull().sum()
