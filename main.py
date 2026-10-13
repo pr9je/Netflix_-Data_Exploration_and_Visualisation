@@ -198,10 +198,15 @@ for i in df_final[df_final['country'].isnull()]['Directors'].unique():
     imp=df_final[df_final['Directors']==i]['country'].mode().values[0]
     df_final.loc[df_final['Directors']==i,'country']=df_final.loc[df_final['Directors']==i,'country'].fillna(imp)
 
-for i in df_final[df_final['country'].isnull()]['Actors'].unique():
-  if i in df_final[~df_final['country'].isnull()]['Actors'].unique():
-    imp=df_final[df_final['Actors']==i]['country'].mode().values[0]
-    df_final.loc[df_final['Actors']==i,'country']=df_final.loc[df_final['Actors']==i,'country'].fillna(imp)
-#If there are still nulls, I just replace it by Unknown Country
-df_final['country'].fillna('Unknown Country',inplace=True)
+# Calculate the mode country for each Actor using only non-null country records
+actor_modes = df_final[df_final['country'].notnull()].groupby('Actors')['country'].agg(lambda x: x.mode().iat[0] if not x.mode().empty else np.nan)
+
+# Map the imputed countries onto the missing values
+is_null_country = df_final['country'].isnull()
+df_final.loc[is_null_country, 'country'] = df_final.loc[is_null_country, 'Actors'].map(actor_modes)
+
+# If there are still nulls, replace them with 'Unknown Country'
+df_final['country'].fillna('Unknown Country', inplace=True)
+
+# Output the remaining null counts
 df_final.isnull().sum()
