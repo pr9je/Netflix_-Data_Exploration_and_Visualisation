@@ -237,3 +237,15 @@ ax.set_xlabel('Duration (minutes) — TV shows shown as 0')
 ax.set_ylabel('Count')
 plt.tight_layout()
 plt.show()
+
+bins1 = [-1,1,50,80,100,120,150,200,315]
+labels1 = ['<1','1-50','50-80','80-100','100-120','120-150','150-200','200-315']
+df_final1['duration_copy'] = pd.cut(df_final1['duration_copy'], bins=bins1, labels=labels1)
+df_final1.head()
+
+
+df_final1.loc[~df_final1['duration'].str.contains('Season'),'duration']=df_final1.loc[~df_final1['duration'].str.contains('Season'),'duration_copy']
+df_final1.drop(['duration_copy'],axis=1,inplace=True)
+df_final1.head()
+
+df_final1['duration'].value_counts()
