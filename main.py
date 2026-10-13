@@ -210,3 +210,30 @@ df_final['country'].fillna('Unknown Country', inplace=True)
 
 # Output the remaining null counts
 df_final.isnull().sum()
+
+df_final['duration'].value_counts()
+
+# removing mins from data
+df_final['duration'] = df_final['duration'].str.replace(" min","")
+df_final.head()
+
+df_final['duration'].unique()
+
+df_final['duration_copy']=df_final['duration'].copy()
+df_final1=df_final.copy()
+
+df_final1.loc[df_final1['duration_copy'].str.contains('Season'),'duration_copy']=0
+df_final1['duration_copy']=df_final1['duration_copy'].astype('int')
+df_final1.head()
+
+df_final1['duration_copy'].describe()
+# Note: sns.distplot is deprecated; using sns.histplot with kde=True (equivalent output)
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.histplot(df_final1['duration_copy'], bins=36, kde=True, color='darkblue',
+             edgecolor='black', ax=ax, line_kws={'linewidth': 3})
+ax.set_title('Distribution of Duration (numeric — movie minutes, TV shows set to 0)',
+             fontsize=13, fontweight='bold')
+ax.set_xlabel('Duration (minutes) — TV shows shown as 0')
+ax.set_ylabel('Count')
+plt.tight_layout()
+plt.show()
