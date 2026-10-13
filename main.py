@@ -249,3 +249,27 @@ df_final1.drop(['duration_copy'],axis=1,inplace=True)
 df_final1.head()
 
 df_final1['duration'].value_counts()
+
+from datetime import datetime
+from dateutil.parser import parse
+arr=[]
+for i in df_final1['date_added'].values:
+  dt1=parse(i)
+  arr.append(dt1.strftime('%Y-%m-%d'))
+df_final1['Modified_Added_date'] =arr
+df_final1['Modified_Added_date']=pd.to_datetime(df_final1['Modified_Added_date'])
+df_final1['month_added']=df_final1['Modified_Added_date'].dt.month
+df_final1['week_Added']=df_final1['Modified_Added_date'].dt.isocalendar().week.astype('int')
+df_final1['year']=df_final1['Modified_Added_date'].dt.year
+df_final1.head()
+
+#Titles such as Bahubali(Hindi Version),Bahubali(Tamil Version) were there. Since it's only one movie in different languages,
+#presence of brackets and content between brackets is removed.
+df_final1['title']=df_final1['title'].str.replace(r"\(.*\)","",regex=True)
+df_final1.head()
+
+# Create Movie and TV Show subsets for split analysis
+df_shows=df_final1[df_final1['type']=='TV Show']
+df_movies=df_final1[df_final1['type']=='Movie']
+print(f'TV Show rows : {len(df_shows):,}')
+print(f'Movie rows   : {len(df_movies):,}')
