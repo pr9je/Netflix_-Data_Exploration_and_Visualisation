@@ -79,3 +79,134 @@ for bar in ax.patches:
           f'{bar.get_width():.1f}%', va='center', fontsize=9)
 plt.tight_layout()
 plt.show()
+
+# Non-graphical Analysis: Value count & Unique Attributes
+# length of data
+len(df)
+
+# Checking datatypes
+df.dtypes
+
+# number of unique values in our data
+for i in df.columns:
+  print(i,':', df[i].nunique)
+
+# Checking null values in every column of our data
+df.isnull().sum()
+
+# Checking the occurences of each of the ratings.
+df['rating'].value_counts()
+
+## Pre-Processing: Unnesting Multi-Value Columns
+
+con1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+con1[:3]
+
+df_new1 = pd.DataFrame(con1,index=df['title'])
+df_new1.head()
+
+constraint1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+df_new1 = pd.DataFrame(constraint1, index=df['title'])
+df_new1 = df_new1.stack()
+df_new1 = pd.DataFrame(df_new1.reset_index())
+df_new1.sample(5)
+
+# unnesting directors column, i.e. creating separate lines for each director in a moive. 
+constraint1 = df['director'].apply(lambda x: str(x).split(', ')).tolist()
+df_new1 = pd.DataFrame(constraint1, index=df['title'])
+df_new1 = df_new1.stack()
+df_new1 = pd.DataFrame(df_new1.reset_index())
+df_new1.rename(columns={0:'Directors'}, inplace=True)
+df_new1.drop(['level_1'], axis=1,inplace=True)
+df_new1.head()
+
+# unnesting the cast column, i.e. - creating separate lines for each cast member in movie
+constraint2 = df['cast'].apply(lambda x: str(x).split(', ')).tolist()
+df_new2 = pd.DataFrame(constraint2, index=df['title'])
+df_new2=df_new2.stack()
+df_new2=pd.DataFrame(df_new2.reset_index())
+df_new2.rename(columns={0:'Cast'}, inplace=True)
+df_new2.drop(['level_1'], axis=1, inplace=True)
+df_new2.head()
+
+# unnesting the listed_in column, i.e. creating separate lines for each genre in a movie
+constraint3 = df['listed_in'].apply(lambda x: str(x).split(', ')).tolist()
+df_new3 = pd.DataFrame(constraint3, index=df['title'])
+df_new3=df_new3.stack()
+df_new3= pd.DataFrame(df_new3.reset_index())
+df_new3.rename(columns={0:'Genre'},inplace=True)
+df_new3.drop(['level_1'], axis=1, inplace=True)
+df_new3.head()
+
+# unnesting the country column, i.e. creating separate lines for each country in a movie
+constraint4 = df['country'].apply(lambda x: str(x).split(', ')).tolist()
+df_new4 = pd.DataFrame(constraint4,index=df['title'])
+df_new4 = df_new4.stack()
+df_new4 = pd.DataFrame(df_new4.reset_index())
+df_new4.rename(columns={0: 'country'},inplace=True)
+df_new4.drop(['level_1'], axis=1, inplace=True)
+df_new4.head()
+
+#merging the unnested director data with unnested actors data
+df_new5 = df_new2.merge(df_new1, on=['title'],how='inner')
+
+#merging the above merged data with unnested genre data
+df_new6 = df_new5.merge(df_new3, on=['title'],how='inner')
+
+# merging the above merged data with unnested country data
+df_new = df_new6.merge(df_new4, on=['title'], how='inner')
+
+# replacing nan values od directore and actor by unknown actor and director
+df_new['Actors'].replace(['nan'],['Unknown Actor'], inplace=True)
+df_new['Directors'].replace(['nan'],['Unknown Director'],inplace=True)
+df_new['country'].replace(['nan'], [np.nan],inplace=True)
+df_new.head(20)
+
+#merging our unnested data with the original data
+df_final=df_new.merge(df[['show_id', 'type', 'title', 'date_added',
+       'release_year', 'rating', 'duration']],on=['title'],how='left')
+df_final.head()
+
+#now checking nulls
+df_final.isnull().sum()
+
+df_final.loc[df_final['duration'].isnull(),'duration']=df_final.loc[df_final['duration'].isnull(),'duration'].fillna(df_final['rating'])
+df_final.loc[df_final['rating'].str.contains('min', na=False),'rating']='NR'
+df_final.isnull().sum()
+
+# Rating can't ne in minutes, so it has been mad NR(i.e. - Non Rated)
+df_final.loc[df_final['rating'].str.contains('min', na=False), 'rating'] = 'NR'
+df_final['rating'].fillna('NR', inplace=True)
+pd.set_option('display.max_rows',None)
+
+df_final.isnull().sum()
+
+# just an attempt to observe nulls in date_added column
+df_final[df_final['date_added'].isnull()].head()
+
+for i in df_final[df_final['date_added'].isnull()]['release_year'].unique():
+  imp = df_final[df_final['release_year']==i]['date_added'].mode().values[0]
+  df_final.loc[df_final['release_year']==i,'date_added'] = df_final.loc[df_final['release_year']==i,'date_added'].fillna(imp)
+
+#country column is imputed on the basis of director,i.e- suppose there's a null for country
+#when we have a director whose other movies have a country given.So below piece of code just checks the mode of
+#country for the director
+# and imputes in place of nulls the corresponding mode
+
+for i in df_final[df_final['country'].isnull()]['Directors'].unique():
+  if i in df_final[~df_final['country'].isnull()]['Directors'].unique():
+    imp=df_final[df_final['Directors']==i]['country'].mode().values[0]
+    df_final.loc[df_final['Directors']==i,'country']=df_final.loc[df_final['Directors']==i,'country'].fillna(imp)
+
+# Calculate the mode country for each Actor using only non-null country records
+actor_modes = df_final[df_final['country'].notnull()].groupby('Actors')['country'].agg(lambda x: x.mode().iat[0] if not x.mode().empty else np.nan)
+
+# Map the imputed countries onto the missing values
+is_null_country = df_final['country'].isnull()
+df_final.loc[is_null_country, 'country'] = df_final.loc[is_null_country, 'Actors'].map(actor_modes)
+
+# If there are still nulls, replace them with 'Unknown Country'
+df_final['country'].fillna('Unknown Country', inplace=True)
+
+# Output the remaining null counts
+df_final.isnull().sum()
