@@ -292,3 +292,12 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+# number of distinct titles on the basis of type.
+df_type = df_final1.groupby(['type']).agg({"title":"nunique"}).reset_index()
+plt.figure(figsize=(7, 7))
+plt.pie(df_type['title'], explode=(0.05, 0.05), labels=df_type['type'],
+        colors=['purple', 'green'], autopct='%.1f%%',
+        wedgeprops=dict(edgecolor='white', linewidth=2))
+plt.title('Movies vs TV Shows on Netflix', fontsize=14, fontweight='bold')
+plt.show()
