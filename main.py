@@ -301,3 +301,12 @@ plt.pie(df_type['title'], explode=(0.05, 0.05), labels=df_type['type'],
         wedgeprops=dict(edgecolor='white', linewidth=2))
 plt.title('Movies vs TV Shows on Netflix', fontsize=14, fontweight='bold')
 plt.show()
+
+# number of distinct titles on the basis of country
+df_final.groupby(['country']).agg({"title":"nunique"})
+
+df_final1['country'] = df_final1['country'].str.replace(',','')
+df_final1.head()
+
+#number of distinct titles on the basis of country
+df_final1.groupby(['country']).agg({"title":"nunique"})
