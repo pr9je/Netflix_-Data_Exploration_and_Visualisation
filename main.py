@@ -210,3 +210,85 @@ df_final['country'].fillna('Unknown Country', inplace=True)
 
 # Output the remaining null counts
 df_final.isnull().sum()
+
+df_final['duration'].value_counts()
+
+# removing mins from data
+df_final['duration'] = df_final['duration'].str.replace(" min","")
+df_final.head()
+
+df_final['duration'].unique()
+
+df_final['duration_copy']=df_final['duration'].copy()
+df_final1=df_final.copy()
+
+df_final1.loc[df_final1['duration_copy'].str.contains('Season'),'duration_copy']=0
+df_final1['duration_copy']=df_final1['duration_copy'].astype('int')
+df_final1.head()
+
+df_final1['duration_copy'].describe()
+# Note: sns.distplot is deprecated; using sns.histplot with kde=True (equivalent output)
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.histplot(df_final1['duration_copy'], bins=36, kde=True, color='darkblue',
+             edgecolor='black', ax=ax, line_kws={'linewidth': 3})
+ax.set_title('Distribution of Duration (numeric — movie minutes, TV shows set to 0)',
+             fontsize=13, fontweight='bold')
+ax.set_xlabel('Duration (minutes) — TV shows shown as 0')
+ax.set_ylabel('Count')
+plt.tight_layout()
+plt.show()
+
+bins1 = [-1,1,50,80,100,120,150,200,315]
+labels1 = ['<1','1-50','50-80','80-100','100-120','120-150','150-200','200-315']
+df_final1['duration_copy'] = pd.cut(df_final1['duration_copy'], bins=bins1, labels=labels1)
+df_final1.head()
+
+
+df_final1.loc[~df_final1['duration'].str.contains('Season'),'duration']=df_final1.loc[~df_final1['duration'].str.contains('Season'),'duration_copy']
+df_final1.drop(['duration_copy'],axis=1,inplace=True)
+df_final1.head()
+
+df_final1['duration'].value_counts()
+
+from datetime import datetime
+from dateutil.parser import parse
+arr=[]
+for i in df_final1['date_added'].values:
+  dt1=parse(i)
+  arr.append(dt1.strftime('%Y-%m-%d'))
+df_final1['Modified_Added_date'] =arr
+df_final1['Modified_Added_date']=pd.to_datetime(df_final1['Modified_Added_date'])
+df_final1['month_added']=df_final1['Modified_Added_date'].dt.month
+df_final1['week_Added']=df_final1['Modified_Added_date'].dt.isocalendar().week.astype('int')
+df_final1['year']=df_final1['Modified_Added_date'].dt.year
+df_final1.head()
+
+#Titles such as Bahubali(Hindi Version),Bahubali(Tamil Version) were there. Since it's only one movie in different languages,
+#presence of brackets and content between brackets is removed.
+df_final1['title']=df_final1['title'].str.replace(r"\(.*\)","",regex=True)
+df_final1.head()
+
+# Create Movie and TV Show subsets for split analysis
+df_shows=df_final1[df_final1['type']=='TV Show']
+df_movies=df_final1[df_final1['type']=='Movie']
+print(f'TV Show rows : {len(df_shows):,}')
+print(f'Movie rows   : {len(df_movies):,}')
+
+# Visual Analysis - Univariate & Bivariate 
+# Continous Variables - Distplot / Histogram / Countplot
+# Univariate Analysis in terms of counts of each columns. 
+# number of distinct tiles on the basis  of genre
+df_final1.groupby(['Genre']).agg({"title":"nunique"})
+
+df_genre = df_final1.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_genre[::-1]['Genre'], df_genre[::-1]['title'], color=['orange'])
+plt.xlabel('Frequency of Genres')
+plt.ylabel("Genres")
+plt.title('Top 15 Genres on Netflix (Overall)', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
