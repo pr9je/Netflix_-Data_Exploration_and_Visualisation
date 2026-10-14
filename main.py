@@ -279,3 +279,16 @@ print(f'Movie rows   : {len(df_movies):,}')
 # Univariate Analysis in terms of counts of each columns. 
 # number of distinct tiles on the basis  of genre
 df_final1.groupby(['Genre']).agg({"title":"nunique"})
+
+df_genre = df_final1.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_genre[::-1]['Genre'], df_genre[::-1]['title'], color=['orange'])
+plt.xlabel('Frequency of Genres')
+plt.ylabel("Genres")
+plt.title('Top 15 Genres on Netflix (Overall)', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
