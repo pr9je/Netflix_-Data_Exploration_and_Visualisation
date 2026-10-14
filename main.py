@@ -273,3 +273,9 @@ df_shows=df_final1[df_final1['type']=='TV Show']
 df_movies=df_final1[df_final1['type']=='Movie']
 print(f'TV Show rows : {len(df_shows):,}')
 print(f'Movie rows   : {len(df_movies):,}')
+
+# Visual Analysis - Univariate & Bivariate 
+# Continous Variables - Distplot / Histogram / Countplot
+# Univariate Analysis in terms of counts of each columns. 
+# number of distinct tiles on the basis  of genre
+df_final1.groupby(['Genre']).agg({"title":"nunique"})
