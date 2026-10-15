@@ -310,3 +310,16 @@ df_final1.head()
 
 #number of distinct titles on the basis of country
 df_final1.groupby(['country']).agg({"title":"nunique"})
+
+df_country=df_final1.groupby(['country']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:5]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_country[::-1]['country'], df_country[::-1]['title'],color=['blue'])
+plt.xlabel('Titles by Countries')
+plt.ylabel('Countries')
+plt.title('Top 5 Content-Producing Countries on Netflix', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=11, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
