@@ -323,3 +323,19 @@ plt.bar_label(bars, padding=5, fontsize=11, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+# number of distinct titles on the basis of rating.
+df_final1.groupby(['rating']).agg({"title":"nunique"})
+
+df_rating=df_final1.groupby(['rating']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_rating[::-1]['rating'], df_rating[::-1]['title'],color=['violet'])
+plt.xlabel('Frequency by Ratings')
+plt.ylabel('Ratings')
+plt.title('Content Rating Distribution on Netflix', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=11, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
