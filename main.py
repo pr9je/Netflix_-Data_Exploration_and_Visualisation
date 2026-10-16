@@ -342,3 +342,12 @@ plt.show()
 
 # number of distinct titles on the basis of duration.
 df_final1.groupby(['duration']).agg({"title":"nunique"})
+
+df_duration = df_final1.groupby(['duration']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+plt.figure(figsize=(15, 8))
+bar = plt.barh(df_duration[::-1]['duration'], df_duration[::-1]['title'],color=['pink'])
+plt.xlabel('Frequency by Duration')
+plt.ylabel('Duration')
+plt.title('Top Duration Buckets on Netflix', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
