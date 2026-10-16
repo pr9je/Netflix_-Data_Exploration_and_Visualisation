@@ -339,3 +339,6 @@ plt.bar_label(bars, padding=5, fontsize=11, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+# number of distinct titles on the basis of duration.
+df_final1.groupby(['duration']).agg({"title":"nunique"})
