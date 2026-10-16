@@ -351,3 +351,31 @@ plt.ylabel('Duration')
 plt.title('Top Duration Buckets on Netflix', fontsize=14, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+# ── HISTOGRAM: Movie Duration (numeric, minutes) ─────────────────────────────
+movies_num = df_final.copy()
+movies_num = movies_num[movies_num['type']=='Movie'].copy()
+movies_num['dur_num'] = pd.to_numeric(
+    movies_num['duration'].str.replace(' min','').str.replace('min',''), errors='coerce')
+
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+
+# Histogram
+axes[0].hist(movies_num['dur_num'].dropna(), bins=40, color='steelblue', edgecolor='white')
+axes[0].set_title('Movie Duration — Histogram', fontsize=13, fontweight='bold')
+axes[0].set_xlabel('Duration (minutes)')
+axes[0].set_ylabel('Count')
+
+# KDE / Distplot replacement
+sns.kdeplot(movies_num['dur_num'].dropna(), ax=axes[1],
+            fill=True, color='steelblue', alpha=0.6, linewidth=2.5)
+axes[1].set_title('Movie Duration — KDE (Distplot)', fontsize=13, fontweight='bold')
+axes[1].set_xlabel('Duration (minutes)')
+
+plt.suptitle('Univariate: Continuous Variable — Movie Duration', fontsize=15, fontweight='bold', y=1.01)
+plt.tight_layout()
+plt.show()
+
+print(f'\nMedian movie duration: {movies_num["dur_num"].median():.0f} min  |  '
+      f'Mean: {movies_num["dur_num"].mean():.0f} min  |  '
+      f'Max: {movies_num["dur_num"].max():.0f} min')
