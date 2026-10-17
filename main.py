@@ -396,3 +396,6 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+#number of distinct titles on the basis of Directors
+df_final1.groupby(['Directors']).agg({"title":"nunique"})
