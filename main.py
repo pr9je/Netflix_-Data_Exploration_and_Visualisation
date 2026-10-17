@@ -413,3 +413,22 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+# number of distinct titles on the basis of year.
+df_final1.groupby(['year']).agg({"title":"nunique"})
+
+df_year=df_final1.groupby(['year']).agg({"title":"nunique"}).reset_index()
+plt.figure(figsize=(13,5))
+ax = sns.lineplot(data=df_year, x='year', y='title', marker='o', linewidth=2.5, color='royalblue')
+
+# Explicitly annotating only the distinct title count (y-value) on each data point
+for x, y in zip(df_year['year'], df_year['title']):
+    plt.text(x, y + 40, f'{int(y)}', ha='center', va='bottom', fontsize=9, fontweight='bold', color='darkblue')
+
+plt.ylabel("Titles Added in the Year")
+plt.xlabel("Year")
+plt.title("Content Added to Netflix Per Year", fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
+
+
