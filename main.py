@@ -399,3 +399,17 @@ plt.show()
 
 #number of distinct titles on the basis of Directors
 df_final1.groupby(['Directors']).agg({"title":"nunique"})
+
+df_directors=df_final1.groupby(['Directors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:31]
+df_directors=df_directors[df_directors['Directors']!='Unknown Director']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_directors[::-1]['Directors'], df_directors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Movies')
+plt.ylabel('Popular Directors')
+plt.title('Top Directors by Title Count (Overall)', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
