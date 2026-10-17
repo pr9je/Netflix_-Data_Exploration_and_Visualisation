@@ -379,3 +379,6 @@ plt.show()
 print(f'\nMedian movie duration: {movies_num["dur_num"].median():.0f} min  |  '
       f'Mean: {movies_num["dur_num"].mean():.0f} min  |  '
       f'Max: {movies_num["dur_num"].max():.0f} min')
+
+# number of distinct titles on the basis of actors
+df_final1.groupby(['Actors']).agg({"title":"nunique"})
