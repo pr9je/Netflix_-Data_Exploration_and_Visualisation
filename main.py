@@ -449,3 +449,29 @@ plt.xlabel("Week No.")
 plt.title('Content Addition by Week of Year', fontsize=14, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+df_release_year=df_final1[df_final1['release_year']>=1980].groupby(['release_year']).agg({"title":"nunique"}).reset_index()
+plt.figure(figsize=(13,5))
+ax = sns.lineplot(data=df_release_year, x='release_year', y='title', linewidth=2.5, color='crimson')
+
+# Finding the minimum and maximum data points
+min_row = df_release_year.loc[df_release_year['title'].idxmin()]
+max_row = df_release_year.loc[df_release_year['title'].idxmax()]
+
+# Annotating the minimum point
+plt.text(min_row['release_year'], min_row['title'] + 30, f"Min: {int(min_row['title'])}", 
+         ha='center', va='bottom', fontsize=10, fontweight='bold', color='black', 
+         bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray', boxstyle='round,pad=0.3'))
+
+# Annotating the maximum point
+plt.text(max_row['release_year'], max_row['title'] + 30, f"Max: {int(max_row['title'])}", 
+         ha='center', va='bottom', fontsize=10, fontweight='bold', color='black', 
+         bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray', boxstyle='round,pad=0.3'))
+
+plt.ylabel("Titles by Actual Release Year")
+plt.xlabel("Year")
+plt.title('Actual Release Year of Netflix Content (from 1980)', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
+
+
