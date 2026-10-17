@@ -382,3 +382,17 @@ print(f'\nMedian movie duration: {movies_num["dur_num"].median():.0f} min  |  '
 
 # number of distinct titles on the basis of actors
 df_final1.groupby(['Actors']).agg({"title":"nunique"})
+
+df_actors=df_final1.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:31]
+df_actors=df_actors[df_actors['Actors']!='Unknown Actor']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Movies')
+plt.ylabel('Popular Actors')
+plt.title('Top Actors by Title Count (Overall)', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
