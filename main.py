@@ -432,3 +432,20 @@ plt.tight_layout()
 plt.show()
 
 
+# number of distinct titles on the basis of week.
+df_final1.groupby(['week_Added']).agg({"title":"nunique"})
+
+
+df_week=df_final1.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+plt.figure(figsize=(15,8))
+ax = sns.lineplot(data=df_week, x='week_Added', y='title', linewidth=2, color='darkorange', marker='o')
+
+# Adding y-values (title count) to each point on the line chart
+for x, y in zip(df_week['week_Added'], df_week['title']):
+    plt.text(x, y + 8, f'{int(y)}', ha='center', va='bottom', fontsize=8, color='black', fontweight='semibold')
+
+plt.ylabel("Titles Released in the Week")
+plt.xlabel("Week No.")
+plt.title('Content Addition by Week of Year', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
