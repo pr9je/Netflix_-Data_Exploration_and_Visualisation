@@ -548,3 +548,17 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+# Rating — Movies
+df_rating=df_movies.groupby(['rating']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_rating[::-1]['rating'], df_rating[::-1]['title'],color=['violet'])
+plt.xlabel('Frequency by Ratings')
+plt.ylabel('Ratings')
+plt.title('Rating Distribution — Movies', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
