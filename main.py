@@ -507,3 +507,16 @@ plt.bar_label(bar, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+df_country=df_shows.groupby(['country']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_country[::-1]['country'], df_country[::-1]['title'],color=['blue'])
+plt.xlabel('Titles by Countries')
+plt.ylabel('Countries')
+plt.title('Top 10 Content-Producing Countries - TV Shows', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
