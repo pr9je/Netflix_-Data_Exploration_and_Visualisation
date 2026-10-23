@@ -576,3 +576,16 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+# Duration — Movies
+df_duration=df_movies.groupby(['duration']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_duration[::-1]['duration'], df_duration[::-1]['title'],color=['pink'])
+plt.xlabel('Frequency by Duration')
+plt.ylabel('Duration')
+plt.title('Duration Distribution — Movies (Minute Buckets)', fontsize=14, fontweight='bold')
+
+# Adding values to the individual bars
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
