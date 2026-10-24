@@ -601,3 +601,15 @@ plt.title('Top Actors by Title Count - TV Shows',fontsize=14, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+# Acotos - TV Shows
+df_actors = df_movies.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:31]
+df_actors = df_actors[df_actors['Actors']!='Unknown Actor']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Movies')
+plt.ylabel('Popular Actors')
+plt.title('Top Actors by Title Count - Movies',fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout()
+plt.show()
