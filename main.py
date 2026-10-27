@@ -714,3 +714,40 @@ for x, y in zip(df_month_movies['month_added'], df_month_movies['title']):
 
 plt.tight_layout()
 plt.show()
+
+# Release Year trend - Shows vs Movies
+df_ry_shows = df_shows[df_shows['release_year']>=1980].groupby(['release_year']).agg({"title":"nunique"}).reset_index()
+df_ry_movies = df_movies[df_movies['release_year']>=1980].groupby(['release_year']).agg({"title":"nunique"}).reset_index()
+
+fig, axes = plt.subplots(1,2,figsize=(16,5))
+
+# TV Shows
+sns.lineplot(data=df_ry_shows,  x='release_year', y='title', ax=axes[0], color='steelblue', linewidth=2)
+axes[0].set_ylabel("TV Shows Actual Release Year")
+axes[0].set_xlabel("Year")
+axes[0].set_title("TV Shows — Actual Release Year (≥1980)", fontweight='bold')
+
+# Annotate Min and Max for TV Shows
+ry_shows_min = df_ry_shows.loc[df_ry_shows['title'].idxmin()]
+ry_shows_max = df_ry_shows.loc[df_ry_shows['title'].idxmax()]
+axes[0].text(ry_shows_min['release_year'], ry_shows_min['title'] + 10, f"Min: {int(ry_shows_min['title'])}", 
+             ha='center', va='bottom', fontsize=9, fontweight='bold', color='black', bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray'))
+axes[0].text(ry_shows_max['release_year'], ry_shows_max['title'] + 10, f"Max: {int(ry_shows_max['title'])}", 
+             ha='center', va='bottom', fontsize=9, fontweight='bold', color='black', bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray'))
+
+# Movies
+sns.lineplot(data=df_ry_movies, x='release_year', y='title', ax=axes[1], color='coral',    linewidth=2)
+axes[1].set_ylabel("Movies Actual Release Year")
+axes[1].set_xlabel("Year")
+axes[1].set_title("Movies — Actual Release Year (≥1980)", fontweight='bold')
+
+# Annotate Min and Max for Movies
+ry_movies_min = df_ry_movies.loc[df_ry_movies['title'].idxmin()]
+ry_movies_max = df_ry_movies.loc[df_ry_movies['title'].idxmax()]
+axes[1].text(ry_movies_min['release_year'], ry_movies_min['title'] + 25, f"Min: {int(ry_movies_min['title'])}", 
+             ha='center', va='bottom', fontsize=9, fontweight='bold', color='black', bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray'))
+axes[1].text(ry_movies_max['release_year'], ry_movies_max['title'] + 25, f"Max: {int(ry_movies_max['title'])}", 
+             ha='center', va='bottom', fontsize=9, fontweight='bold', color='black', bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray'))
+
+plt.tight_layout()
+plt.show()
