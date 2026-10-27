@@ -644,3 +644,27 @@ plt.xlabel("Year")
 plt.title('Content Added to Netflix Per Year', fontsize=14, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+# Year trend - TV Shows vs Movies (Bivariate Line)
+
+df_year_shows = df_shows.groupby(['year']).agg({"title":"nunique"}).reset_index()
+df_year_movies = df_movies.groupby(['year']).agg({"title":"nunique"}).reset_index()
+
+fig, axes = plt.subplots(1,2,figsize=(16,5))
+
+# TV Shows
+sns.lineplot(data=df_year_shows,  x='year', y='title', ax=axes[0], marker='o', color='steelblue', linewidth=2)
+axes[0].set_ylabel("Shows Added in the Year"); axes[0].set_xlabel("Year")
+axes[0].set_title("TV Shows Added Per Year", fontweight='bold')
+for x, y in zip(df_year_shows['year'], df_year_shows['title']):
+    axes[0].text(x, y + 15, f'{int(y)}', ha='center', va='bottom', fontsize=8, fontweight='bold', color='darkblue')
+
+# Movies
+sns.lineplot(data=df_year_movies, x='year', y='title', ax=axes[1], marker='o', color='coral',    linewidth=2)
+axes[1].set_ylabel("Movies Added in the Year"); axes[1].set_xlabel("Year")
+axes[1].set_title("Movies Added Per Year", fontweight='bold')
+for x, y in zip(df_year_movies['year'], df_year_movies['title']):
+    axes[1].text(x, y + 30, f'{int(y)}', ha='center', va='bottom', fontsize=8, fontweight='bold', color='brown')
+
+plt.tight_layout()
+plt.show()
