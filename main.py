@@ -668,3 +668,27 @@ for x, y in zip(df_year_movies['year'], df_year_movies['title']):
 
 plt.tight_layout()
 plt.show()
+
+# Week trend — TV Shows vs Movies
+df_week_shows =df_shows.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+df_week_movies=df_movies.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+
+fig, axes = plt.subplots(1,2,figsize=(16,5))
+
+# TV Shows
+sns.lineplot(data=df_week_shows,  x='week_Added', y='title', ax=axes[0], color='steelblue', marker='o', linewidth=2)
+axes[0].set_ylabel("Shows Released in the Week"); axes[0].set_xlabel("Week No.")
+axes[0].set_title("TV Shows Added by Week", fontweight='bold')
+for x, y in zip(df_week_shows['week_Added'], df_week_shows['title']):
+    axes[0].text(x, y + 2, f'{int(y)}', ha='center', va='bottom', fontsize=7, color='black')
+
+# Movies
+sns.lineplot(data=df_week_movies, x='week_Added', y='title', ax=axes[1], color='coral', marker='o', linewidth=2)
+axes[1].set_ylabel("Movies Released in the Week"); axes[1].set_xlabel("Week No.")
+axes[1].set_title("Movies Added by Week", fontweight='bold')
+for x, y in zip(df_week_movies['week_Added'], df_week_movies['title']):
+    axes[1].text(x, y + 5, f'{int(y)}', ha='center', va='bottom', fontsize=7, color='black')
+
+plt.tight_layout()
+plt.show()
+
