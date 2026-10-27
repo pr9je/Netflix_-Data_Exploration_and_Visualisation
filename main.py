@@ -692,3 +692,25 @@ for x, y in zip(df_week_movies['week_Added'], df_week_movies['title']):
 plt.tight_layout()
 plt.show()
 
+# Month trend — TV Shows vs Movies
+df_month_shows =df_shows.groupby(['month_added']).agg({"title":"nunique"}).reset_index()
+df_month_movies=df_movies.groupby(['month_added']).agg({"title":"nunique"}).reset_index()
+
+fig, axes = plt.subplots(1,2,figsize=(16,5))
+
+# TV Shows
+sns.lineplot(data=df_month_shows,  x='month_added', y='title', ax=axes[0], marker='o', color='steelblue', linewidth=2)
+axes[0].set_ylabel("TV Shows Released in the Month"); axes[0].set_xlabel("Month")
+axes[0].set_title("TV Shows Added by Month", fontweight='bold')
+for x, y in zip(df_month_shows['month_added'], df_month_shows['title']):
+    axes[0].text(x, y + 8, f'{int(y)}', ha='center', va='bottom', fontsize=8, color='black', fontweight='semibold')
+
+# Movies
+sns.lineplot(data=df_month_movies, x='month_added', y='title', ax=axes[1], marker='o', color='coral',    linewidth=2)
+axes[1].set_ylabel("Movies Released in the Month"); axes[1].set_xlabel("Month")
+axes[1].set_title("Movies Added by Month", fontweight='bold')
+for x, y in zip(df_month_movies['month_added'], df_month_movies['title']):
+    axes[1].text(x, y + 15, f'{int(y)}', ha='center', va='bottom', fontsize=8, color='black', fontweight='semibold')
+
+plt.tight_layout()
+plt.show()
