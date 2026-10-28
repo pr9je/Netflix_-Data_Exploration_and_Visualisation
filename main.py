@@ -751,3 +751,54 @@ axes[1].text(ry_movies_max['release_year'], ry_movies_max['title'] + 25, f"Max: 
 
 plt.tight_layout()
 plt.show()
+
+# ── BOXPLOT 1: Movie Duration (minutes) by Rating ─────────────────────────────
+top_ratings = movies_num['rating'].value_counts().head(8).index
+box_data = movies_num[movies_num['rating'].isin(top_ratings)]
+
+fig, ax = plt.subplots(figsize=(14, 6))
+sns.boxplot(data=box_data, x='rating', y='dur_num', order=top_ratings,
+            ax=ax, palette='Set3')
+ax.set_title('Boxplot: Movie Duration by Content Rating', fontsize=14, fontweight='bold')
+ax.set_xlabel('Content Rating')
+ax.set_ylabel('Duration (minutes)')
+plt.tight_layout()
+plt.show()
+
+# ── BOXPLOT 2: Release Year by Content Type ──────────────────────────────────
+fig, ax = plt.subplots(figsize=(9, 6))
+sns.boxplot(data=df_final1, x='type', y='release_year',
+            ax=ax, palette=['#4C72B0','#DD8452'])
+ax.set_title('Boxplot: Release Year by Content Type', fontsize=14, fontweight='bold')
+ax.set_xlabel('Content Type')
+ax.set_ylabel('Release Year')
+plt.tight_layout()
+plt.show()
+
+
+# ── BOXPLOT 3: Duration (numeric) by Content Type ────────────────────────────
+# Extract numeric values for both movies (minutes) and TV shows (seasons)
+# We fetch the clean original TV show durations from 'df' to avoid the binned values in 'df_final1'
+tv_shows_orig = df[df['type'] == 'TV Show'].copy()
+tv_shows_orig['seasons'] = tv_shows_orig['duration'].str.extract(r'(\d+)').astype(float)
+
+movies_num2 = movies_num[['type','dur_num']].rename(columns={'dur_num':'value'})
+df_tv_plot  = tv_shows_orig[['type','seasons']].rename(columns={'seasons':'value'})
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+# Left subplot: Movie Durations (minutes)
+sns.boxplot(data=movies_num2, x='type', y='value', ax=axes[0], color='#4C72B0', width=0.4)
+axes[0].set_title('Boxplot: Movie Duration', fontsize=13, fontweight='bold')
+axes[0].set_xlabel('Content Type')
+axes[0].set_ylabel('Duration (minutes)')
+
+# Right subplot: TV Show Durations (seasons)
+sns.boxplot(data=df_tv_plot, x='type', y='value', ax=axes[1], color='#DD8452', width=0.4)
+axes[1].set_title('Boxplot: TV Show Seasons', fontsize=13, fontweight='bold')
+axes[1].set_xlabel('Content Type')
+axes[1].set_ylabel('Number of Seasons')
+
+plt.suptitle('Comparison of Durations (Movies vs TV Shows)', fontsize=15, fontweight='bold', y=1.02)
+plt.tight_layout()
+plt.show()
