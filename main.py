@@ -803,8 +803,11 @@ plt.suptitle('Comparison of Durations (Movies vs TV Shows)', fontsize=15, fontwe
 plt.tight_layout()
 plt.show()
 
-# below countries will be analyzed for both shows and movies
-shows_and_movies = ['United States','India','United Kingdom']
 
-# below countries will be only analyzed on basis of shows.
-only_shows = ['Japan','South Korea']
+
+# Filter for United States once to improve performance and readability
+df_usa = df_final1[df_final1['country'] == 'United States']
+
+# Split into TV Shows and Movies
+df_usa_shows = df_usa[df_usa['type'] == 'TV Show']
+df_usa_movies = df_usa[df_usa['type'] == 'Movie']
