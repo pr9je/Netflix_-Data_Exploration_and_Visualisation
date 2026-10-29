@@ -802,3 +802,9 @@ axes[1].set_ylabel('Number of Seasons')
 plt.suptitle('Comparison of Durations (Movies vs TV Shows)', fontsize=15, fontweight='bold', y=1.02)
 plt.tight_layout()
 plt.show()
+
+# below countries will be analyzed for both shows and movies
+shows_and_movies = ['United States','India','United Kingdom']
+
+# below countries will be only analyzed on basis of shows.
+only_shows = ['Japan','South Korea']
