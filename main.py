@@ -811,3 +811,64 @@ df_usa = df_final1[df_final1['country'] == 'United States']
 # Split into TV Shows and Movies
 df_usa_shows = df_usa[df_usa['type'] == 'TV Show']
 df_usa_movies = df_usa[df_usa['type'] == 'Movie']
+
+df_genre = df_usa_shows.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_genre[::-1]['Genre'], df_genre[::-1]['title'], color=['orange'])
+plt.xlabel('Frequency of Genres')
+plt.ylabel("Genres")
+plt.title('Top Genres - USA TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout();plt.show()
+
+df_genre = df_usa_movies.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+plt.figure(figsize=(15, 8))
+bar = plt.barh(df_genre[::-1]['Genre'],df_genre[::-1]['title'],color=['orange'])
+plt.xlabel('Frequency of Genres')
+plt.ylabel("Genres")
+plt.title('Top Genres - USA Movies', fontsize=14, fontweight='bold')
+plt.bar_label(bar, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout();plt.show()
+
+df_rating=df_usa_shows.groupby(['rating']).agg({"title":"nunique"}).reset_index().sort_values(by=["title"],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_rating[::-1]['rating'], df_rating[::-1]['title'],color=['violet'])
+plt.xlabel('Frequency by Ratings'); plt.ylabel('Ratings')
+plt.title('Rating Distribution — USA TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
+
+df_rating=df_usa_movies.groupby(['rating']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_rating[::-1]['rating'], df_rating[::-1]['title'],color=['violet'])
+plt.xlabel('Frequency by Ratings'); plt.ylabel('Ratings')
+plt.title('Rating Distribution — USA Movies', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
+
+df_duration=df_usa_movies.groupby(['duration']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_duration[::-1]['duration'], df_duration[::-1]['title'],color=['pink'])
+plt.xlabel('Frequency by Duration'); plt.ylabel('Duration')
+plt.title('Movie Duration — USA', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
+
+df_actors=df_usa_shows.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+df_actors=df_actors[df_actors['Actors']!='Unknown Actor']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Shows'); plt.ylabel('Popular Actors')
+plt.title('Top Actors — USA TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
+
+df_actors=df_usa_movies.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+df_actors=df_actors[df_actors['Actors']!='Unknown Actor']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Movies'); plt.ylabel('Popular Actors')
+plt.title('Top Actors — USA Movies', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
+
