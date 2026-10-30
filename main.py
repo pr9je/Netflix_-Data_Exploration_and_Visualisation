@@ -889,3 +889,43 @@ plt.xlabel('Number of Movies'); plt.ylabel('Popular Directors')
 plt.title('Top Directors — USA Movies', fontsize=14, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout(); plt.show()
+
+
+
+df_year=df_usa_shows.groupby(['year']).agg({"title":"nunique"}).reset_index()
+sns.lineplot(data=df_year, x='year', y='title', marker='o', linewidth=2)
+plt.ylabel("Shows Released in the Year"); plt.xlabel("Year")
+plt.title("USA TV Shows Added Per Year", fontweight='bold') 
+for x, y in zip(df_year['year'], df_year['title']):
+  plt.text(x, y + 15, f'{int(y)}', ha='center', va='bottom', fontsize=8, fontweight='bold', color='darkblue')
+plt.tight_layout(); plt.show()
+
+
+import plotly.express as px
+import plotly.io as pio
+
+# Set the default renderer for Google Colab
+pio.renderers.default = 'colab'
+
+# Group the data to count unique movies per year
+df_year = df_usa_movies.groupby(['year']).agg({"title":"nunique"}).reset_index()
+
+# Plot the data using Plotly Express
+fig = px.line(
+    df_year, 
+    x='year', 
+    y='title', 
+    markers=True, 
+    title='USA Movies Added Per Year',
+    labels={'year': 'Year', 'title': 'Movies Released in the Year'}
+)
+
+# Customize layout aesthetics
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    template='plotly_white'
+)
+
+fig.show()
+
