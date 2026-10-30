@@ -956,3 +956,31 @@ fig.update_layout(
 )
 
 fig.show()
+
+import plotly.express as px
+import plotly.io as pio
+
+# Set the default renderer for Google Colab
+pio.renderers.default = 'colab'
+
+# Group the data to count unique shows per week
+df_week = df_usa_movies.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+
+# Plot the data using Plotly Express
+fig = px.line(
+    df_week,
+    x='week_Added',
+    y='title',
+    markers=True,
+    title='USA TV Movies — Week Added',
+    labels={'week_Added': 'Week No.', 'title': 'Movies Released in the week'}
+)
+
+# Customize layout aesthetics
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    template='plotly_white'
+)
+
+fig.show()
