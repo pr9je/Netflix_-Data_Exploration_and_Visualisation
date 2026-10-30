@@ -872,3 +872,11 @@ plt.title('Top Actors — USA Movies', fontsize=14, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout(); plt.show()
 
+df_directors=df_usa_shows.groupby(['Directors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+df_directors=df_directors[df_directors['Directors']!='Unknown Director']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_directors[::-1]['Directors'], df_directors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Shows'); plt.ylabel('Popular Directors')
+plt.title('Top Directors — USA TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
