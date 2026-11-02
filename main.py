@@ -1010,3 +1010,8 @@ fig.update_layout(
 )
 
 fig.show()
+
+df_release_year=df_usa_shows[df_usa_shows['release_year']>=1980].groupby(['release_year']).agg({"title":"nunique"}).reset_index()
+sns.lineplot(data=df_release_year, x='release_year', y='title', linewidth=2)
+plt.ylabel("Shows Actual Release Date"); plt.xlabel("Year")
+plt.title("USA TV Shows — Actual Release Year", fontweight='bold'); plt.tight_layout(); plt.show()
