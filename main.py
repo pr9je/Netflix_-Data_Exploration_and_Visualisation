@@ -984,3 +984,29 @@ fig.update_layout(
 )
 
 fig.show()
+
+
+# Set the default renderer for Google Colab
+pio.renderers.default = 'colab'
+
+# Filter and group the data
+df_release_year = df_usa_movies[df_usa_movies['release_year'] >= 1980].groupby(['release_year']).agg({"title": "nunique"}).reset_index()
+
+# Plot using Plotly Express
+fig = px.line(
+    df_release_year,
+    x='release_year',
+    y='title',
+    markers=True,
+    title='USA Movies — Actual Release Year (from 1980)',
+    labels={'release_year': 'Year', 'title': 'Movies Actual Release Date'}
+)
+
+# Customize chart aesthetics
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    template='plotly_white'
+)
+
+fig.show()
