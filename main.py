@@ -1059,3 +1059,18 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+
+df_genre = df_india_movies.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_genre[::-1]['Genre'], df_genre[::-1]['title'], color='orange')
+plt.xlabel('Frequency of Genres', fontsize=11)
+plt.ylabel('Genres', fontsize=11)
+plt.title('Top Genres — India Movies', fontsize=14, fontweight='bold')
+
+# Add annotations to make the plot informative
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
