@@ -1042,3 +1042,20 @@ plt.xlabel('Number of Movies'); plt.ylabel('Popular Actor-Director Combination')
 plt.title('Top Actor-Director Combinations — USA Movies', fontsize=13, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout(); plt.show()
+
+# Re-filter the India TV Shows correctly using singular 'TV Show' to avoid empty data
+df_india_shows = df_final1[(df_final1['country'] == 'India') & (df_final1['type'] == 'TV Show')]
+
+df_genre = df_india_shows.groupby(['Genre']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_genre[::-1]['Genre'], df_genre[::-1]['title'], color='orange')
+plt.xlabel('Frequency of Genres', fontsize=11)
+plt.ylabel('Genres', fontsize=11)
+plt.title('Top Genres — India TV Shows', fontsize=14, fontweight='bold')
+
+# Add annotations to make the plot informative
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
