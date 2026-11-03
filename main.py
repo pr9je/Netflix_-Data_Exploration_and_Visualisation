@@ -1015,3 +1015,9 @@ df_release_year=df_usa_shows[df_usa_shows['release_year']>=1980].groupby(['relea
 sns.lineplot(data=df_release_year, x='release_year', y='title', linewidth=2)
 plt.ylabel("Shows Actual Release Date"); plt.xlabel("Year")
 plt.title("USA TV Shows — Actual Release Year", fontweight='bold'); plt.tight_layout(); plt.show()
+
+#Analysing a combination of actors and directors
+df_usa_movies['Actor_Director_Combination'] = df_usa_movies.Actors.str.cat(df_usa_movies.Directors, sep=' and ')
+df_usa_movies_subset=df_usa_movies[df_usa_movies['Actors']!='Unknown Actor']
+df_usa_movies_subset=df_usa_movies_subset[df_usa_movies_subset['Directors']!='Unknown Director']
+df_usa_movies_subset.head()
