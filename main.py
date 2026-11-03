@@ -1021,3 +1021,16 @@ df_usa_movies['Actor_Director_Combination'] = df_usa_movies.Actors.str.cat(df_us
 df_usa_movies_subset=df_usa_movies[df_usa_movies['Actors']!='Unknown Actor']
 df_usa_movies_subset=df_usa_movies_subset[df_usa_movies_subset['Directors']!='Unknown Director']
 df_usa_movies_subset.head()
+
+df_usa_shows['Actor_Director_Combination'] = df_usa_shows.Actors.str.cat(df_usa_shows.Directors, sep=' and ')
+df_usa_shows_subset=df_usa_shows[df_usa_shows['Actors']!='Unknown Actor']
+df_usa_shows_subset=df_usa_shows_subset[df_usa_shows_subset['Directors']!='Unknown Director']
+df_usa_shows_subset.head()
+
+df_actors_directors=df_usa_shows_subset.groupby(['Actor_Director_Combination']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_actors_directors[::-1]['Actor_Director_Combination'], df_actors_directors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Shows'); plt.ylabel('Popular Actor-Director Combination')
+plt.title('Top Actor-Director Combinations — USA TV Shows', fontsize=13, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
