@@ -138,4 +138,4 @@ GitHub: [@pr9je](https://github.com/pr9je)
 
 ---
 
-*This project was developed as part of my Data Science and Machine Learning learning journey.*
+***This project was developed as part of my Data Science and Machine Learning learning journey.***
