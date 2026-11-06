@@ -1087,3 +1087,17 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+df_rating = df_india_movies.groupby(['rating']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'], ascending=False)[:15]
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_rating[::-1]['rating'], df_rating[::-1]['title'], color=['violet'], edgecolor='black', alpha=0.85)
+plt.xlabel('Frequency by Ratings', fontsize=12)
+plt.ylabel('Ratings', fontsize=12)
+plt.title('Rating Distribution — India Movies', fontsize=15, fontweight='bold')
+plt.tight_layout()
+
+# Adding visual value annotations on each horizontal bar
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
