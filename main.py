@@ -1109,3 +1109,14 @@ plt.xlabel('Frequency by Duration'); plt.ylabel('Duration')
 plt.title('Movie Duration — India', fontsize=14, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout(); plt.show()
+
+df_actors = df_india_shows.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+df_actors = df_actors[df_actors['Actors'] != 'Unknown Actor']
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'], color=['indigo'])
+plt.xlabel('Number of Shows', fontsize=14, fontweight='bold')
+plt.ylabel('Popular Actors', fontsize=14, fontweight='bold')
+plt.title('Top Actors — India TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout()
+plt.show()
