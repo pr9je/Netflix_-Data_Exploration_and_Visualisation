@@ -1101,3 +1101,11 @@ plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+
+df_duration=df_india_movies.groupby(['duration']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_duration[::-1]['duration'], df_duration[::-1]['title'],color=['pink'])
+plt.xlabel('Frequency by Duration'); plt.ylabel('Duration')
+plt.title('Movie Duration — India', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
