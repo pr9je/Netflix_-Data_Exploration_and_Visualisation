@@ -1186,3 +1186,36 @@ fig.update_layout(
 )
 
 fig.show()
+
+import plotly.express as px
+import plotly.io as pio
+
+# Set the default renderer for Google Colab
+pio.renderers.default = 'colab'
+
+# Clean and sort year-wise Indian TV shows count data
+df_year = df_india_movies.groupby(['year']).agg({"title":"nunique"}).reset_index().sort_values('year')
+df_year = df_year[df_year['year'].notnull()]
+df_year['year'] = df_year['year'].astype(int)
+
+# Create an interactive line chart using Plotly
+fig = px.line(
+    df_year,
+    x='year',
+    y='title',
+    markers=True,
+    title='India Movies Added Per Year',
+    labels={'year': 'Year', 'title': 'Movies Added in the Year'},
+    text='title'
+)
+
+# Customize chart aesthetics and hover effects
+fig.update_traces(textposition='top center', line=dict(color='darkblue', width=3), marker=dict(size=8))
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    xaxis=dict(tickmode='linear', tick0=df_year['year'].min(), dtick=1),
+    template='plotly_white'
+)
+
+fig.show()
