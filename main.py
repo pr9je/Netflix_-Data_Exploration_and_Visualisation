@@ -1131,3 +1131,25 @@ plt.title('Top Actors — India Movies', fontsize=10, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+df_directors = df_india_shows.groupby(['Directors']).agg({"title":"nunique"}).reset_index()
+df_directors = df_directors[df_directors['Directors'] != 'Unknown Director']
+df_directors = df_directors.sort_values(by=['title'], ascending=False)[:10]
+
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_directors[::-1]['Directors'], df_directors[::-1]['title'], color=['indigo'])
+plt.xlabel('Number of Shows', fontsize=14, fontweight='bold')
+plt.ylabel('Popular Directors', fontsize=14, fontweight='bold')
+plt.title('Top Directors — India TV Shows', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout()
+plt.show()
+
+df_directors = df_india_movies.groupby(['Directors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:10]
+df_directors = df_directors[df_directors['Directors']!= 'Unknown Directors']
+plt.figure(figsize=(15,8))
+bars = plt.barh(df_directors[::-1]['Directors'], df_directors[::-1]['title'],color=['indigo'])
+plt.xlabel('Number of Movies'); plt.ylabel('Popular Directors')
+plt.title('Top Directors — India Movies', fontsize=14, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout(); plt.show()
