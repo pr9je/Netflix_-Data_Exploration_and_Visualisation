@@ -1219,3 +1219,53 @@ fig.update_layout(
 )
 
 fig.show()
+
+# Group the data by week added for Indian TV Shows
+df_week = df_india_shows.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+
+# Create an interactive line chart using Plotly Express
+fig = px.line(
+    df_week,
+    x='week_Added',
+    y='title',
+    markers=True,
+    title='India TV Shows — Week Added',
+    labels={'week_Added': 'Week No.', 'title': 'Shows Released in the Week'},
+    text='title'
+)
+
+# Customize aesthetics
+fig.update_traces(textposition='top center', line=dict(color='royalblue', width=3.5), marker=dict(size=7))
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    xaxis=dict(tickmode='linear', tick0=1, dtick=5),
+    template='plotly_white'
+)
+
+fig.show()
+
+# Group the data by week added for Indian TV Shows
+df_week = df_india_movies.groupby(['week_Added']).agg({"title":"nunique"}).reset_index()
+
+# Create an interactive line chart using Plotly Express
+fig = px.line(
+    df_week,
+    x='week_Added',
+    y='title',
+    markers=True,
+    title='India Movies — Week Added',
+    labels={'week_Added': 'Week No.', 'title': 'Movies Released in the Week'},
+    text='title'
+)
+
+# Customize aesthetics
+fig.update_traces(textposition='top center', line=dict(color='royalblue', width=3.5), marker=dict(size=7))
+fig.update_layout(
+    title_font=dict(size=16, family="Arial", color="black"),
+    title_x=0.5,
+    xaxis=dict(tickmode='linear', tick0=1, dtick=5),
+    template='plotly_white'
+)
+
+fig.show()
