@@ -1120,3 +1120,14 @@ plt.title('Top Actors — India TV Shows', fontsize=14, fontweight='bold')
 plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
 plt.tight_layout()
 plt.show()
+
+df_actors = df_india_movies.groupby(['Actors']).agg({"title":"nunique"}).reset_index().sort_values(by=['title'],ascending=False)[:15]
+df_actors = df_actors[df_actors['Actors'] != 'Unknown Actor']
+plt.figure(figsize=(15, 8))
+bars = plt.barh(df_actors[::-1]['Actors'], df_actors[::-1]['title'], color=['indigo'])
+plt.xlabel('Number of Movies', fontsize=10, fontweight='bold')
+plt.ylabel('Popular Actors', fontsize=10, fontweight='bold')
+plt.title('Top Actors — India Movies', fontsize=10, fontweight='bold')
+plt.bar_label(bars, padding=5, fontsize=10, fontweight='bold')
+plt.tight_layout()
+plt.show()
